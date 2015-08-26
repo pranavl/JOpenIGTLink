@@ -1,6 +1,6 @@
 /**
  * JOpenIGTClient.java
- * 
+ *
  * @author Pranav Lakshminarayanan
  */
 package main;
@@ -44,29 +44,37 @@ public class JOpenIGTClient {
         System.out.print("INPUT: ");
         toServ = s.nextLine();
 
-        // CONNECT TO SERVER
+        // CLIENT LOOP
         try {
+            // Connect ot server
             clientSocket = new Socket(
                     InetAddress.getByName(SERVER_IP), SERVER_PORT);
+            
+            while (!(toServ.equals("Q") || toServ.equals("q"))) {
 
-            outToServer = new DataOutputStream(
-                    clientSocket.getOutputStream());
+                outToServer = new DataOutputStream(
+                        clientSocket.getOutputStream());
 
-            inFromServer = new DataInputStream(clientSocket.getInputStream());
-            System.out.println("Connected to - "
-                    + SERVER_IP + ":" + SERVER_PORT);
+                inFromServer = 
+                        new DataInputStream(clientSocket.getInputStream());
+                System.out.println("Connected to - "
+                        + SERVER_IP + ":" + SERVER_PORT);
 
-            // WRITE TO SERVER AND RECEIVE MESSAGE
-            outToServer.writeBytes(toServ);
-            outToServer.write(0x00);    //EOF character
-            outToServer.flush();
+                // WRITE TO SERVER AND RECEIVE MESSAGE
+                outToServer.writeBytes(toServ);
+                outToServer.write(0x00);    //EOF character
+                outToServer.flush();
 
-            byte[] b = readToByteArray(inFromServer);
+                byte[] b = readToByteArray(inFromServer);
 
-            StringMessage rec = new StringMessage(new Header(b), b);
+                StringMessage rec = new StringMessage(new Header(b), b);
 
-            System.out.println("FROM SERVER: \n" + rec.getMessage());
-
+                System.out.println("\nFROM SERVER: \n" + rec.getMessage());
+                
+                // Receive next input
+                System.out.print("\nINPUT: ");
+                toServ = s.nextLine();
+            }
             s.close();
             clientSocket.close();
 
@@ -75,6 +83,13 @@ public class JOpenIGTClient {
         }
     }
 
+    /**
+     * Read all bytes from an input stream to a byte array.
+     *
+     * @param is Input stream
+     * @return byte array representation of input stream
+     * @throws IOException if error while reading stream
+     */
     private static byte[] readToByteArray(DataInputStream is) throws IOException {
 
         ByteArrayOutputStream buffer = new ByteArrayOutputStream();
