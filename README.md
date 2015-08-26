@@ -12,7 +12,7 @@ it is necessary to compile and add the `.jar` to the Android project's `libs` fo
 Android does not support use of JAR's compiled with Java 1.8. To use this library, the Java source must be compiled using JDK 7.
 
 ##Code Example
-Two new classes were written to add to the existing library.
+Two new classes were added to the existing library in the `main` package.
 
 ####`JOpenIGTClient`
 This class is a sample client using the OpenIGTLink protocol.
