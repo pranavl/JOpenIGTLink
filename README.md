@@ -20,6 +20,7 @@ This class is a sample client using the OpenIGTLink protocol.
 **How to use:**
 * Enter the key associated with a tracked marker to receive the associated frame transformation
 * Enter "PROJ" to receive the projection matrix
+* Enter "q" to exit
 
 ####`JOpenIGTServer`
 This class is a server using this OpenIGTLink protocol. 
