@@ -25,13 +25,13 @@ public class JOpenIGTClient {
     public static void main(String[] args) {
 
         // MODIFY SERVER SETTINGS HERE
-        //final String SERVER_IP = "10.0.0.6";
-        final String SERVER_IP = "192.168.1.10";
+        final String SERVER_IP = "10.0.0.9";
+        //final String SERVER_IP = "192.168.1.10";
         //final String SERVER_IP = "127.0.0.1";
         //final String SERVER_IP = "localhost";
         final int SERVER_PORT = 8099;
 
-        System.out.println("Will connect to - "
+        System.err.println("Will connect to - "
                 + SERVER_IP + ":" + SERVER_PORT + "\n");
 
         String toServ;
@@ -47,16 +47,15 @@ public class JOpenIGTClient {
         // CLIENT LOOP
         try {
             // Connect ot server
-            clientSocket = new Socket(
-                    InetAddress.getByName(SERVER_IP), SERVER_PORT);
-            
-            while (!(toServ.equals("Q") || toServ.equals("q"))) {
 
+            while (!(toServ.equals("Q") || toServ.equals("q"))) {
+                clientSocket = new Socket(
+                        InetAddress.getByName(SERVER_IP), SERVER_PORT);
                 outToServer = new DataOutputStream(
                         clientSocket.getOutputStream());
 
-                inFromServer = 
-                        new DataInputStream(clientSocket.getInputStream());
+                inFromServer
+                        = new DataInputStream(clientSocket.getInputStream());
                 System.out.println("Connected to - "
                         + SERVER_IP + ":" + SERVER_PORT);
 
@@ -70,14 +69,14 @@ public class JOpenIGTClient {
                 StringMessage rec = new StringMessage(new Header(b), b);
 
                 System.out.println("\nFROM SERVER: \n" + rec.getMessage());
-                
+
                 // Receive next input
                 System.out.print("\nINPUT: ");
                 toServ = s.nextLine();
+
+                clientSocket.close();
             }
             s.close();
-            clientSocket.close();
-
         } catch (Exception e) {
             System.out.println(e.toString());
         }
